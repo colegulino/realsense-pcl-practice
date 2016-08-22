@@ -2,11 +2,11 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
-// Standard Libraries
-#include <iostream>
-
 // Librealsense
 #include <librealsense/rs.hpp>
+
+// Standard Libraries
+#include <iostream>
 
 int main(int argc, const char * argv[]) 
 {
