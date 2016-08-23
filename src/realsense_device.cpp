@@ -16,7 +16,7 @@ realsense_device::realsense_device()
 	dev_->enable_stream(rs::stream::color, rs::preset::best_quality);
 	dev_->start();
 
-	dev_->get_extrinsics(rs::stream::depth, rs::stream::color);
+	depth_to_color_ = dev_->get_extrinsics(rs::stream::depth, rs::stream::color);
 
 	depth_intrin_ = dev_->get_stream_intrinsics(rs::stream::depth);
 
@@ -56,16 +56,31 @@ std::string realsense_device::serial() const
 
 rs::intrinsics realsense_device::depth_intrin() const 
 {
+	if(!is_connected())
+	{
+		throw std::runtime_error("Cannot get depth intrinsics. No device connected.");
+	}
+
 	return depth_intrin_;
 }
 
 rs::intrinsics realsense_device::color_intrin() const
 {
+	if(!is_connected())
+	{
+		throw std::runtime_error("Cannot get color intrinsics. No device connected.");
+	}
+
 	return color_intrin_;
 }
 
 double realsense_device::scale() const
 {
+	if(!is_connected())
+	{
+		throw std::runtime_error("Cannot get depth scale. No device connected.");
+	}
+
 	return scale_;
 }
 
@@ -80,6 +95,11 @@ void realsense_device::print_info() const
 
 std::vector<uint16_t> realsense_device::depth_image() const
 {
+	if(!is_connected())
+	{
+		throw std::runtime_error("Cannot get depth image. No device connected.");
+	}
+
 	const uint16_t* d_image = 
 		static_cast<const uint16_t*>(dev_->get_frame_data(rs::stream::depth));
 
@@ -88,6 +108,11 @@ std::vector<uint16_t> realsense_device::depth_image() const
 
 std::vector<uint8_t> realsense_device::color_image() const
 {
+	if(!is_connected())
+	{
+		throw std::runtime_error("Cannot get color image. No device connected.");
+	}
+
 	const uint8_t* c_image =
 		static_cast<const uint8_t*>(dev_->get_frame_data(rs::stream::color));
 
@@ -95,6 +120,11 @@ std::vector<uint8_t> realsense_device::color_image() const
 }
 rs::extrinsics realsense_device::depth_to_color() const
 {
+	if(!is_connected())
+	{
+		throw std::runtime_error("Cannot get image extrinsics. No device connected.");
+	}
+
 	return depth_to_color_;
 }
 
