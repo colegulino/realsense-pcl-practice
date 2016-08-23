@@ -8,6 +8,7 @@ project(Demo)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 add_executable(demo ${PROJECT_SOURCE_DIR}/src/demo.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # Find PCL
 find_package(PCL 1.8 REQUIRED COMPONENTS common io)
@@ -19,4 +20,25 @@ add_definitions(${PCL_DEFINITIONS})
 link_directories(${Project_SOURCE_DIR}/lib/librealsense/lib)
 find_library(REALSENSE realsense ${PROJECT_SOURCE_DIR}/lib/librealsense/lib)
 
-target_link_libraries(demo ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} realsense)
+# Add library for realsense device wrapper
+add_library(realsense_device
+			SHARED
+			 src/realsense_device.cpp
+			)
+target_link_libraries(realsense_device realsense)
+
+# Add library for realsense_utils
+add_library(realsense_utils
+			SHARED
+			 src/realsense_utils.cpp
+			)
+target_link_libraries(realsense_utils realsense realsense_device)
+
+
+target_link_libraries(demo 
+					  ${PCL_COMMON_LIBRARIES} 
+					  ${PCL_IO_LIBRARIES} 
+					  realsense 
+					  realsense_utils
+					  realsense_device
+					  )
