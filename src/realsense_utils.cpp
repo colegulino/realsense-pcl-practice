@@ -1,4 +1,10 @@
+// 
+// Utilities for realsense usage
+// 
+
 #include <realsense_utils/realsense_utils.h>
+
+#include <GLFW/glfw3.h>
 
 namespace rs_utils
 {

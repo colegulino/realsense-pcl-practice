@@ -16,6 +16,11 @@ include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
+# Find GLFW
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLFW REQUIRED glfw3)
+include_directories(${GLFW_INCLUDE_DIRS})
+
 # Find realsense
 link_directories(${Project_SOURCE_DIR}/lib/librealsense/lib)
 find_library(REALSENSE realsense ${PROJECT_SOURCE_DIR}/lib/librealsense/lib)
@@ -34,11 +39,18 @@ add_library(realsense_utils
 			)
 target_link_libraries(realsense_utils realsense realsense_device)
 
+# Add library for render_utils
+add_library(render_utils
+			SHARED
+			 src/render_utils.cpp
+			)
+target_link_libraries(render_utils realsense ${GLFW_LIBRARIES})
 
 target_link_libraries(demo 
 					  ${PCL_COMMON_LIBRARIES} 
-					  ${PCL_IO_LIBRARIES} 
+					  ${PCL_IO_LIBRARIES}
 					  realsense 
 					  realsense_utils
 					  realsense_device
+					  render_utils
 					  )

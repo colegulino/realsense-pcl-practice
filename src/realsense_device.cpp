@@ -129,4 +129,16 @@ rs::extrinsics realsense_device::depth_to_color() const
 }
 
 
+void realsense_device::log_to_file(const std::string& log_file)
+{
+	rs::log_to_file(rs::log_severity::debug, log_file.c_str());
+}
+
+
+
+
+
+
+
+
 

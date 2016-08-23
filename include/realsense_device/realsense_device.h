@@ -111,4 +111,21 @@ public:
 	// @exception Throws a runtime_error if there is no device connected
 	// 
 	rs::extrinsics depth_to_color() const;
+
+	// 
+	// Logs the debug messages for the realsense camera
+	// 
+	// @param log_file A string representing the log file name
+	// 
+	void log_to_file(const std::string& log_file = "/logs/librealsense.log");
 };
+
+
+
+
+
+
+
+
+
+
