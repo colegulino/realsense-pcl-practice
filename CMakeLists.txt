@@ -11,15 +11,10 @@ add_executable(demo ${PROJECT_SOURCE_DIR}/src/demo.cpp)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # Find PCL
-find_package(PCL 1.8 REQUIRED COMPONENTS common io)
+find_package(PCL 1.8 REQUIRED)
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
-
-# Find GLFW
-find_package(PkgConfig REQUIRED)
-pkg_search_module(GLFW REQUIRED glfw3)
-include_directories(${GLFW_INCLUDE_DIRS})
 
 # Find realsense
 link_directories(${Project_SOURCE_DIR}/lib/librealsense/lib)
@@ -44,7 +39,10 @@ add_library(render_utils
 			SHARED
 			 src/render_utils.cpp
 			)
-target_link_libraries(render_utils realsense ${GLFW_LIBRARIES})
+target_link_libraries(render_utils 
+					  realsense 
+					  ${PCL_LIBRARIES}
+					 )
 
 target_link_libraries(demo 
 					  ${PCL_COMMON_LIBRARIES} 

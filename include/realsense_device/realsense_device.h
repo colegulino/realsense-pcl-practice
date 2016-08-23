@@ -117,7 +117,12 @@ public:
 	// 
 	// @param log_file A string representing the log file name
 	// 
-	void log_to_file(const std::string& log_file = "/logs/librealsense.log");
+	void log_to_file(const std::string& log_file = "/logs/librealsense.log") const;
+
+	// 
+	// Hold until frames have been gotten from the device
+	// 
+	void wait_for_frames() const;
 };
 
 
